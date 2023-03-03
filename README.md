@@ -74,11 +74,17 @@ de données.
 ```bash
 cd EpicEvents
 ```
+Créer un superuser (qui pourra créer un premier utilisateur dans le groupe 
+"gestion") :
+```bash
+python manage.py createsuperuser
+```
 Lancer le script python :
 ```bash
 python manage.py runserver
 ```
-Les utilisateurs administrateurs ont accès à : http://localhost:8000/admin  
+Les superusers et le personnel du groupe "gestion" ont accès à : 
+http://localhost:8000/admin/  
 Les autres utilisateurs ont accès aux données via l'API.
  
 La documentation de cette API se trouve à l'adresse suivante :  

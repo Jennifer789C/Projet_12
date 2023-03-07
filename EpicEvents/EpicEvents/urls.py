@@ -16,22 +16,26 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 from rest_framework_nested import routers
-from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
+from rest_framework_simplejwt.views import TokenObtainPairView, \
+    TokenRefreshView
 from api.views import ClientViewset, ContratViewset, EvenementViewset, \
     ContratFiltreViewset, EvenementFiltreViewset
 
 client_router = routers.SimpleRouter()
 client_router.register("client", ClientViewset, basename="client")
 
-contrat_router = routers.NestedSimpleRouter(client_router, "client", lookup="client")
+contrat_router = routers.NestedSimpleRouter(client_router, "client",
+                                            lookup="client")
 contrat_router.register("contrat", ContratViewset, basename="contrat")
 
-evenement_router = routers.NestedSimpleRouter(contrat_router, "contrat", lookup="contrat")
+evenement_router = routers.NestedSimpleRouter(contrat_router, "contrat",
+                                              lookup="contrat")
 evenement_router.register("evenement", EvenementViewset, basename="evenement")
 
 router = routers.SimpleRouter()
 router.register("contrat", ContratFiltreViewset, basename="contrat_filtre")
-router.register("evenement", EvenementFiltreViewset, basename="evenement_filtre")
+router.register("evenement", EvenementFiltreViewset,
+                basename="evenement_filtre")
 
 urlpatterns = [
     path('admin/', admin.site.urls),

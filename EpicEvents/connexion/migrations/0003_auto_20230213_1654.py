@@ -24,8 +24,8 @@ def creer_groupes(apps, schema_migration):
     view_evenement = Permission.objects.get(codename="view_evenement")
     change_evenement = Permission.objects.get(codename="change_evenement")
 
-    gestion_permissions = [add_personnel, view_personnel, change_personnel, delete_personnel,
-                           view_client, change_client,
+    gestion_permissions = [add_personnel, view_personnel, change_personnel,
+                           delete_personnel, view_client, change_client,
                            view_contrat, change_contrat,
                            view_evenement, change_evenement]
 
@@ -62,7 +62,8 @@ def creer_groupes(apps, schema_migration):
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('connexion', '0002_remove_personnel_username_personnel_equipe_and_more'),
+        ('connexion',
+         '0002_remove_personnel_username_personnel_equipe_and_more'),
     ]
 
     operations = [

@@ -31,9 +31,11 @@ def test_retrieve_client_sans_authentification(apiclient, client):
 @pytest.mark.parametrize("token", ["token_access_gestionnaire",
                                    "token_access_vendeur",
                                    "token_access_technicien"])
-def test_retrieve_client_avec_authentification(apiclient, client, token, request):
+def test_retrieve_client_avec_authentification(apiclient, client, token,
+                                               request):
     token = request.getfixturevalue(token)
-    reponse = apiclient.get(f"/client/{client.id}/", HTTP_AUTHORIZATION="Bearer "+token)
+    reponse = apiclient.get(f"/client/{client.id}/",
+                            HTTP_AUTHORIZATION="Bearer "+token)
     assert reponse.status_code == 200
 
 
@@ -79,7 +81,8 @@ def test_update_client_sans_authentification(apiclient, client):
                                    "token_access_technicien"])
 def test_update_client_sans_permission(apiclient, client, token, request):
     token = request.getfixturevalue(token)
-    reponse = apiclient.put(f"/client/{client.id}/", HTTP_AUTHORIZATION="Bearer "+token)
+    reponse = apiclient.put(f"/client/{client.id}/",
+                            HTTP_AUTHORIZATION="Bearer "+token)
     assert reponse.status_code == 403
 
 
@@ -107,7 +110,8 @@ def test_update_client_mauvais_vendeur(apiclient, client):
             "prenom": "Prenom Contact",
             "email": "client@test.fr",
             "tel": "0123456789"}
-    vendeur = Personnel.objects.create_user(email="vendeur2@mail.fr", password="test")
+    vendeur = Personnel.objects.create_user(email="vendeur2@mail.fr",
+                                            password="test")
     groupe_vente = Group.objects.get(name="vente")
     groupe_vente.user_set.add(vendeur)
     vendeur.save()
@@ -136,5 +140,6 @@ def test_destroy_client_sans_authentification(apiclient, client):
                                    "token_access_technicien"])
 def test_destroy_client(apiclient, client, token, request):
     token = request.getfixturevalue(token)
-    reponse = apiclient.delete(f"/client/{client.id}/", HTTP_AUTHORIZATION="Bearer "+token)
+    reponse = apiclient.delete(f"/client/{client.id}/",
+                               HTTP_AUTHORIZATION="Bearer "+token)
     assert reponse.status_code == 403

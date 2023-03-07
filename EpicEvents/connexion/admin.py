@@ -24,7 +24,10 @@ class PersonnelAdmin(UserAdmin):
     list_display = ("id", "nom", "prenom", "email", "groups")
     fieldsets = (
         (None, {"fields": ("email", "password")}),
-        ("Informations personnelles", {"fields": ("nom", "prenom", "tel", "port")}),
+        ("Informations personnelles", {"fields": ("nom",
+                                                  "prenom",
+                                                  "tel",
+                                                  "port")}),
         ("Autorisations", {"fields": ("is_active", "groups")}),
         ("Dates", {"fields": ("date_joined", "last_login")})
     )

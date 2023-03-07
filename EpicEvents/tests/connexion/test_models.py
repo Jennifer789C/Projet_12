@@ -7,7 +7,8 @@ Personnel = get_user_model()
 
 @pytest.mark.django_db
 def test_creation_gestionnaire(gestionnaire):
-    permissions = ["connexion.add_personnel", "connexion.view_personnel", "connexion.change_personnel", "connexion.delete_personnel",
+    permissions = ["connexion.add_personnel", "connexion.view_personnel",
+                   "connexion.change_personnel", "connexion.delete_personnel",
                    "api.view_client", "api.change_client",
                    "api.view_contrat", "api.change_contrat",
                    "api.view_evenement", "api.change_evenement"]
@@ -22,7 +23,8 @@ def test_creation_gestionnaire(gestionnaire):
 def test_creation_vendeur(vendeur):
     permissions = ["api.add_client", "api.view_client", "api.change_client",
                    "api.add_contrat", "api.view_contrat", "api.change_contrat",
-                   "api.add_evenement", "api.view_evenement", "api.change_evenement"]
+                   "api.add_evenement", "api.view_evenement",
+                   "api.change_evenement"]
     assert vendeur.email == "vendeur@mail.fr"
     assert vendeur.is_staff is False
     assert vendeur.has_perms(permissions) is True
@@ -32,7 +34,8 @@ def test_creation_vendeur(vendeur):
 
 @pytest.mark.django_db
 def test_creation_technicien(technicien):
-    permissions = ["api.view_client", "api.view_evenement", "api.change_evenement"]
+    permissions = ["api.view_client", "api.view_evenement",
+                   "api.change_evenement"]
     assert technicien.email == "technicien@mail.fr"
     assert technicien.is_staff is False
     assert technicien.has_perms(permissions) is True
@@ -43,11 +46,15 @@ def test_creation_technicien(technicien):
 
 @pytest.mark.django_db
 def test_creation_superuser():
-    admin = Personnel.objects.create_superuser(email="test@mail.fr", password="test")
-    permissions = ["connexion.add_personnel", "connexion.view_personnel", "connexion.change_personnel", "connexion.delete_personnel",
-                   "api.add_client", "api.view_client", "api.change_client", "api.delete_client",
-                   "api.add_contrat", "api.view_contrat", "api.change_contrat", "api.delete_contrat",
-                   "api.add_evenement", "api.view_evenement", "api.change_evenement", "api.delete_evenement"]
+    admin = Personnel.objects.create_superuser(email="test@mail.fr",
+                                               password="test")
+    permissions = ["connexion.add_personnel", "connexion.view_personnel",
+                   "connexion.change_personnel", "connexion.delete_personnel",
+                   "api.add_client", "api.view_client", "api.change_client",
+                   "api.delete_client", "api.add_contrat", "api.view_contrat",
+                   "api.change_contrat", "api.delete_contrat",
+                   "api.add_evenement", "api.view_evenement",
+                   "api.change_evenement", "api.delete_evenement"]
     assert admin.email == "test@mail.fr"
     assert admin.is_staff is True
     assert admin.is_superuser is True
@@ -56,7 +63,8 @@ def test_creation_superuser():
 
 @pytest.mark.django_db
 def test_modification_utilisateur():
-    utilisateur = Personnel.objects.create_user(email="test@mail.fr", password="test")
+    utilisateur = Personnel.objects.create_user(email="test@mail.fr",
+                                                password="test")
     groupe_vente = Group.objects.get(name="vente")
     utilisateur.groups = groupe_vente
     utilisateur.save()

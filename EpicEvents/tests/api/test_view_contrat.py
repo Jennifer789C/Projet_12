@@ -17,7 +17,8 @@ def test_list_contrat_sans_authentification(apiclient, client):
                                    "token_access_technicien"])
 def test_list_contrat_sans_permission(apiclient, client, token, request):
     token = request.getfixturevalue(token)
-    reponse = apiclient.get(f"/client/{client.id}/contrat/", HTTP_AUTHORIZATION="Bearer "+token)
+    reponse = apiclient.get(f"/client/{client.id}/contrat/",
+                            HTTP_AUTHORIZATION="Bearer "+token)
     assert reponse.status_code == 403
 
 
@@ -30,7 +31,8 @@ def test_list_contrat(apiclient, client, token_access_vendeur):
 
 @pytest.mark.django_db
 def test_retrieve_contrat_sans_authentification(apiclient, contrat):
-    reponse = apiclient.get(f"/client/{contrat.client.id}/contrat/{contrat.id}/")
+    reponse = apiclient.get(
+        f"/client/{contrat.client.id}/contrat/{contrat.id}/")
     assert reponse.status_code == 401
 
 
@@ -39,15 +41,17 @@ def test_retrieve_contrat_sans_authentification(apiclient, contrat):
                                    "token_access_technicien"])
 def test_retrieve_contrat_sans_permission(apiclient, contrat, token, request):
     token = request.getfixturevalue(token)
-    reponse = apiclient.get(f"/client/{contrat.client.id}/contrat/{contrat.id}/",
-                            HTTP_AUTHORIZATION="Bearer "+token)
+    reponse = apiclient.get(
+        f"/client/{contrat.client.id}/contrat/{contrat.id}/",
+        HTTP_AUTHORIZATION="Bearer "+token)
     assert reponse.status_code == 403
 
 
 @pytest.mark.django_db
 def test_retrieve_contrat(apiclient, contrat, token_access_vendeur):
-    reponse = apiclient.get(f"/client/{contrat.client.id}/contrat/{contrat.id}/",
-                            HTTP_AUTHORIZATION="Bearer "+token_access_vendeur)
+    reponse = apiclient.get(
+        f"/client/{contrat.client.id}/contrat/{contrat.id}/",
+        HTTP_AUTHORIZATION="Bearer "+token_access_vendeur)
     assert reponse.status_code == 200
 
 
@@ -79,7 +83,8 @@ def test_create_contrat(apiclient, client, token_access_vendeur):
 
 @pytest.mark.django_db
 def test_create_contrat_mauvais_vendeur(apiclient, client):
-    vendeur = Personnel.objects.create_user(email="vendeur2@mail.fr", password="test")
+    vendeur = Personnel.objects.create_user(email="vendeur2@mail.fr",
+                                            password="test")
     groupe_vente = Group.objects.get(name="vente")
     groupe_vente.user_set.add(vendeur)
     vendeur.save()
@@ -116,12 +121,15 @@ def test_create_contrat_prospect(apiclient, token_access_vendeur):
                              data=data,
                              HTTP_AUTHORIZATION="Bearer "+token_access_vendeur)
     assert reponse.status_code == 400
-    assert reponse.data == [ErrorDetail(string="Le client doit être au statut 'Client'.", code='invalid')]
+    assert reponse.data == [ErrorDetail(
+        string="Le client doit être au statut 'Client'.",
+        code='invalid')]
 
 
 @pytest.mark.django_db
 def test_update_contrat_sans_authentification(apiclient, contrat):
-    reponse = apiclient.put(f"/client/{contrat.client.id}/contrat/{contrat.id}/")
+    reponse = apiclient.put(
+        f"/client/{contrat.client.id}/contrat/{contrat.id}/")
     assert reponse.status_code == 401
 
 
@@ -130,8 +138,9 @@ def test_update_contrat_sans_authentification(apiclient, contrat):
                                    "token_access_technicien"])
 def test_update_contrat_sans_permission(apiclient, contrat, token, request):
     token = request.getfixturevalue(token)
-    reponse = apiclient.put(f"/client/{contrat.client.id}/contrat/{contrat.id}/",
-                            HTTP_AUTHORIZATION="Bearer "+token)
+    reponse = apiclient.put(
+        f"/client/{contrat.client.id}/contrat/{contrat.id}/",
+        HTTP_AUTHORIZATION="Bearer "+token)
     assert reponse.status_code == 403
 
 
@@ -142,16 +151,18 @@ def test_update_contrat(apiclient, contrat, token_access_vendeur):
             "date_signature": "",
             "montant": 1050,
             "echeance": "2023-07-31"}
-    reponse = apiclient.put(f"/client/{contrat.client.id}/contrat/{contrat.id}/",
-                            data=data,
-                            HTTP_AUTHORIZATION="Bearer "+token_access_vendeur)
+    reponse = apiclient.put(
+        f"/client/{contrat.client.id}/contrat/{contrat.id}/",
+        data=data,
+        HTTP_AUTHORIZATION="Bearer "+token_access_vendeur)
     assert reponse.status_code == 200
     assert reponse.data["montant"] == 1050
 
 
 @pytest.mark.django_db
 def test_update_contrat_mauvais_vendeur(apiclient, contrat):
-    vendeur = Personnel.objects.create_user(email="vendeur2@mail.fr", password="test")
+    vendeur = Personnel.objects.create_user(email="vendeur2@mail.fr",
+                                            password="test")
     groupe_vente = Group.objects.get(name="vente")
     groupe_vente.user_set.add(vendeur)
     vendeur.save()
@@ -166,9 +177,10 @@ def test_update_contrat_mauvais_vendeur(apiclient, contrat):
             "date_signature": "",
             "montant": 1050,
             "echeance": "2023-07-31"}
-    reponse = apiclient.put(f"/client/{contrat.client.id}/contrat/{contrat.id}/",
-                            data=data,
-                            HTTP_AUTHORIZATION="Bearer " + token)
+    reponse = apiclient.put(
+        f"/client/{contrat.client.id}/contrat/{contrat.id}/",
+        data=data,
+        HTTP_AUTHORIZATION="Bearer " + token)
     assert reponse.status_code == 403
 
 
@@ -179,27 +191,33 @@ def test_update_contrat_ferme(apiclient, contrat, token_access_vendeur):
             "date_signature": "",
             "montant": 1050,
             "echeance": "2023-07-31"}
-    reponse = apiclient.put(f"/client/{contrat.client.id}/contrat/{contrat.id}/",
-                            data=data,
-                            HTTP_AUTHORIZATION="Bearer " + token_access_vendeur)
+    reponse = apiclient.put(
+        f"/client/{contrat.client.id}/contrat/{contrat.id}/",
+        data=data,
+        HTTP_AUTHORIZATION="Bearer "+token_access_vendeur)
     assert reponse.data["ouvert"] is False
-    reponse = apiclient.put(f"/client/{contrat.client.id}/contrat/{contrat.id}/",
-                            data=data,
-                            HTTP_AUTHORIZATION="Bearer " + token_access_vendeur)
+    reponse = apiclient.put(
+        f"/client/{contrat.client.id}/contrat/{contrat.id}/",
+        data=data,
+        HTTP_AUTHORIZATION="Bearer "+token_access_vendeur)
     assert reponse.status_code == 400
-    assert reponse.data == [ErrorDetail(string='Votre contrat est fermé, vous ne pouvez plus le modifier.', code='invalid')]
+    assert reponse.data == [ErrorDetail(
+        string='Votre contrat est fermé, vous ne pouvez plus le modifier.',
+        code='invalid')]
 
 
 @pytest.mark.django_db
-def test_update_contrat_erreur_signature(apiclient, contrat, token_access_vendeur):
+def test_update_contrat_erreur_signature(apiclient, contrat,
+                                         token_access_vendeur):
     data = {"ouvert": False,
             "signe": True,
             "date_signature": "",
             "montant": 1050,
             "echeance": "2023-07-31"}
-    reponse = apiclient.put(f"/client/{contrat.client.id}/contrat/{contrat.id}/",
-                            data=data,
-                            HTTP_AUTHORIZATION="Bearer "+token_access_vendeur)
+    reponse = apiclient.put(
+        f"/client/{contrat.client.id}/contrat/{contrat.id}/",
+        data=data,
+        HTTP_AUTHORIZATION="Bearer "+token_access_vendeur)
     assert reponse.status_code == 400
     assert reponse.data["non_field_errors"] == [ErrorDetail(
         string='Votre contrat signé doit contenir une date de signature.',
@@ -210,18 +228,21 @@ def test_update_contrat_erreur_signature(apiclient, contrat, token_access_vendeu
             "date_signature": "2023-02-17",
             "montant": 1050,
             "echeance": "2023-07-31"}
-    reponse = apiclient.put(f"/client/{contrat.client.id}/contrat/{contrat.id}/",
-                            data=data,
-                            HTTP_AUTHORIZATION="Bearer "+token_access_vendeur)
+    reponse = apiclient.put(
+        f"/client/{contrat.client.id}/contrat/{contrat.id}/",
+        data=data,
+        HTTP_AUTHORIZATION="Bearer "+token_access_vendeur)
     assert reponse.status_code == 400
     assert reponse.data["non_field_errors"] == [ErrorDetail(
-        string="Votre contrat ne peut pas contenir de date de signature s'il n'est pas signé.",
+        string="Votre contrat ne peut pas contenir de date de signature "
+               "s'il n'est pas signé.",
         code='invalid')]
 
 
 @pytest.mark.django_db
 def test_destroy_contrat_sans_authentification(apiclient, contrat):
-    reponse = apiclient.delete(f"/client/{contrat.client.id}/contrat/{contrat.id}/")
+    reponse = apiclient.delete(
+        f"/client/{contrat.client.id}/contrat/{contrat.id}/")
     assert reponse.status_code == 401
 
 
@@ -231,6 +252,7 @@ def test_destroy_contrat_sans_authentification(apiclient, contrat):
                                    "token_access_technicien"])
 def test_destroy_contrat_sans_permission(apiclient, contrat, token, request):
     token = request.getfixturevalue(token)
-    reponse = apiclient.delete(f"/client/{contrat.client.id}/contrat/{contrat.id}/",
-                               HTTP_AUTHORIZATION="Bearer "+token)
+    reponse = apiclient.delete(
+        f"/client/{contrat.client.id}/contrat/{contrat.id}/",
+        HTTP_AUTHORIZATION="Bearer "+token)
     assert reponse.status_code == 403

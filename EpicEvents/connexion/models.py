@@ -22,9 +22,13 @@ class UserManager(BaseUserManager):
         extra_fields.setdefault("is_superuser", True)
 
         if extra_fields.get("is_staff") is not True:
-            raise ValueError("Un superuser doit avoir l'option 'is_staff' activé")
+            raise ValueError(
+                "Un superuser doit avoir l'option 'is_staff' activé"
+            )
         if extra_fields.get("is_superuser") is not True:
-            raise ValueError("Un superuser doit avoir l'option 'is_superuser' activé")
+            raise ValueError(
+                "Un superuser doit avoir l'option 'is_superuser' activé"
+            )
 
         return self._create_user(email, password, **extra_fields)
 
@@ -36,7 +40,10 @@ class Personnel(AbstractUser):
     prenom = models.CharField(max_length=25)
     tel = models.CharField(max_length=20)
     port = models.CharField(max_length=20, blank=True, null=True)
-    groups = models.ForeignKey(to='auth.group', null=True, on_delete=models.SET_NULL, related_name="user_set")
+    groups = models.ForeignKey(to='auth.group',
+                               null=True,
+                               on_delete=models.SET_NULL,
+                               related_name="user_set")
     email = models.EmailField(unique=True)
     username = None
     USERNAME_FIELD = "email"

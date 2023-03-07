@@ -14,7 +14,8 @@ def apiclient():
 
 @pytest.fixture()
 def gestionnaire():
-    gestionnaire = Personnel.objects.create_user(email="gestionnaire@mail.fr", password="test")
+    gestionnaire = Personnel.objects.create_user(email="gestionnaire@mail.fr",
+                                                 password="test")
     groupe_gestion = Group.objects.get(name="gestion")
     groupe_gestion.user_set.add(gestionnaire)
     gestionnaire.save()
@@ -32,7 +33,8 @@ def token_access_gestionnaire(apiclient, gestionnaire):
 
 @pytest.fixture()
 def vendeur():
-    vendeur = Personnel.objects.create_user(email="vendeur@mail.fr", password="test")
+    vendeur = Personnel.objects.create_user(email="vendeur@mail.fr",
+                                            password="test")
     groupe_vente = Group.objects.get(name="vente")
     groupe_vente.user_set.add(vendeur)
     vendeur.save()
@@ -50,7 +52,8 @@ def token_access_vendeur(apiclient, vendeur):
 
 @pytest.fixture()
 def technicien():
-    technicien = Personnel.objects.create_user(email="technicien@mail.fr", password="test")
+    technicien = Personnel.objects.create_user(email="technicien@mail.fr",
+                                               password="test")
     groupe_support = Group.objects.get(name="support")
     groupe_support.user_set.add(technicien)
     technicien.save()

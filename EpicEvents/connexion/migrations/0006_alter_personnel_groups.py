@@ -8,13 +8,18 @@ class Migration(migrations.Migration):
 
     dependencies = [
         ('auth', '0012_alter_user_first_name_max_length'),
-        ('connexion', '0005_remove_personnel_equipe_remove_personnel_groups_and_more'),
+        ('connexion',
+         '0005_remove_personnel_equipe_remove_personnel_groups_and_more'),
     ]
 
     operations = [
         migrations.AlterField(
             model_name='personnel',
             name='groups',
-            field=models.ForeignKey(null=True, on_delete=django.db.models.deletion.SET_NULL, related_name='user_set', to='auth.group'),
+            field=models.ForeignKey(
+                null=True,
+                on_delete=django.db.models.deletion.SET_NULL,
+                related_name='user_set',
+                to='auth.group'),
         ),
     ]

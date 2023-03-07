@@ -17,7 +17,13 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='personnel',
             name='equipe',
-            field=models.CharField(choices=[('GESTION', 'Gestion'), ('VENTE', 'Vente'), ('SUPPORT', 'Support')], default='', max_length=10),
+            field=models.CharField(
+                choices=[('GESTION', 'Gestion'),
+                         ('VENTE', 'Vente'),
+                         ('SUPPORT', 'Support')],
+                default='',
+                max_length=10
+            ),
             preserve_default=False,
         ),
         migrations.AlterField(

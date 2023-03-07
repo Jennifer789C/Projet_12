@@ -49,10 +49,13 @@ class ContratModifSerializer(ModelSerializer):
     def validate(self, data):
         if data["signe"] is True:
             if data["date_signature"] is None:
-                raise ValidationError("Votre contrat signé doit contenir une date de signature.")
+                raise ValidationError(
+                    "Votre contrat signé doit contenir une date de signature.")
         else:
             if data["date_signature"] is not None:
-                raise ValidationError("Votre contrat ne peut pas contenir de date de signature s'il n'est pas signé.")
+                raise ValidationError(
+                    "Votre contrat ne peut pas contenir de date de signature "
+                    "s'il n'est pas signé.")
         return data
 
 

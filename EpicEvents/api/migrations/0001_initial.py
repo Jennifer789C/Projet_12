@@ -17,23 +17,34 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='Client',
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
+                ('id', models.BigAutoField(auto_created=True,
+                                           primary_key=True,
+                                           serialize=False,
+                                           verbose_name='ID')),
                 ('nom', models.CharField(max_length=25)),
                 ('prenom', models.CharField(max_length=25)),
                 ('email', models.EmailField(max_length=254)),
                 ('tel', models.CharField(max_length=20)),
                 ('port', models.CharField(max_length=20)),
                 ('societe', models.CharField(max_length=250)),
-                ('statut', models.CharField(choices=[('Prospect', 'Prospect'), ('Client', 'Client')], max_length=10)),
+                ('statut', models.CharField(
+                    choices=[('Prospect', 'Prospect'), ('Client', 'Client')],
+                    max_length=10)),
                 ('date_creation', models.DateField(auto_now_add=True)),
                 ('date_maj', models.DateField(auto_now=True)),
-                ('vendeur', models.ForeignKey(null=True, on_delete=django.db.models.deletion.SET_NULL, to=settings.AUTH_USER_MODEL)),
+                ('vendeur', models.ForeignKey(
+                    null=True,
+                    on_delete=django.db.models.deletion.SET_NULL,
+                    to=settings.AUTH_USER_MODEL)),
             ],
         ),
         migrations.CreateModel(
             name='Contrat',
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
+                ('id', models.BigAutoField(auto_created=True,
+                                           primary_key=True,
+                                           serialize=False,
+                                           verbose_name='ID')),
                 ('ouvert', models.BooleanField(default=True)),
                 ('signe', models.BooleanField(default=False)),
                 ('date_signature', models.DateField()),
@@ -41,21 +52,32 @@ class Migration(migrations.Migration):
                 ('echeance', models.DateField()),
                 ('date_creation', models.DateField(auto_now_add=True)),
                 ('date_maj', models.DateField(auto_now=True)),
-                ('client', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='api.client')),
+                ('client', models.ForeignKey(
+                    on_delete=django.db.models.deletion.CASCADE,
+                    to='api.client')),
             ],
         ),
         migrations.CreateModel(
             name='Evenement',
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
+                ('id', models.BigAutoField(
+                    auto_created=True,
+                    primary_key=True,
+                    serialize=False,
+                    verbose_name='ID')),
                 ('ouvert', models.BooleanField(default=True)),
                 ('date_evenement', models.DateField()),
                 ('participants', models.PositiveIntegerField()),
                 ('notes', models.TextField()),
                 ('date_creation', models.DateField(auto_now_add=True)),
                 ('date_maj', models.DateField(auto_now=True)),
-                ('contrat', models.OneToOneField(on_delete=django.db.models.deletion.CASCADE, to='api.contrat')),
-                ('support', models.ForeignKey(null=True, on_delete=django.db.models.deletion.SET_NULL, to=settings.AUTH_USER_MODEL)),
+                ('contrat', models.OneToOneField(
+                    on_delete=django.db.models.deletion.CASCADE,
+                    to='api.contrat')),
+                ('support', models.ForeignKey(
+                    null=True,
+                    on_delete=django.db.models.deletion.SET_NULL,
+                    to=settings.AUTH_USER_MODEL)),
             ],
         ),
     ]

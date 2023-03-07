@@ -4,8 +4,8 @@ from rest_framework.serializers import ValidationError
 from rest_framework.viewsets import ModelViewSet
 from . import serializers
 from .models import Client, Contrat, Evenement
-from connexion.permissions import EstSuperuser, EstVendeur, EstResponsableClient, \
-    EstResponsableClientContrat, EstResponsableEvenement
+from connexion.permissions import EstSuperuser, EstVendeur, \
+    EstResponsableClient, EstResponsableClientContrat, EstResponsableEvenement
 
 Personnel = get_user_model()
 
@@ -37,7 +37,8 @@ class ClientViewset(ModelViewSet):
         elif self.action == "create":
             permission_classes = [IsAuthenticated, EstVendeur]
         elif self.action == "update":
-            permission_classes = [IsAuthenticated, EstVendeur, EstResponsableClient]
+            permission_classes = [IsAuthenticated, EstVendeur,
+                                  EstResponsableClient]
         else:
             permission_classes = [EstSuperuser]
         return [permission() for permission in permission_classes]
@@ -53,7 +54,9 @@ class ContratViewset(ModelViewSet):
     http_method_names = ["get", "post", "put"]
 
     def get_queryset(self):
-        queryset = Contrat.objects.filter(client=self.kwargs["client_pk"]).order_by("id")
+        queryset = Contrat.objects.filter(
+            client=self.kwargs["client_pk"]
+        ).order_by("id")
         date = self.request.GET.get("date")
         if date:
             queryset = queryset.filter(date_signature=date)
@@ -76,7 +79,8 @@ class ContratViewset(ModelViewSet):
         if self.action == "list" or self.action == "retrieve":
             permission_classes = [IsAuthenticated, EstVendeur]
         elif self.action == "create" or self.action == "update":
-            permission_classes = [IsAuthenticated, EstVendeur, EstResponsableClientContrat]
+            permission_classes = [IsAuthenticated, EstVendeur,
+                                  EstResponsableClientContrat]
         else:
             permission_classes = [EstSuperuser]
         return [permission() for permission in permission_classes]
@@ -90,7 +94,9 @@ class ContratViewset(ModelViewSet):
     def perform_update(self, serializer):
         contrat = Contrat.objects.get(id=self.kwargs["pk"])
         if contrat.ouvert is False:
-            raise ValidationError("Votre contrat est fermé, vous ne pouvez plus le modifier.")
+            raise ValidationError(
+                "Votre contrat est fermé, vous ne pouvez plus le modifier."
+            )
         serializer.save()
 
 
@@ -98,7 +104,9 @@ class EvenementViewset(ModelViewSet):
     http_method_names = ["get", "post", "put"]
 
     def get_queryset(self):
-        return Evenement.objects.filter(contrat=self.kwargs["contrat_pk"]).order_by("id")
+        return Evenement.objects.filter(
+            contrat=self.kwargs["contrat_pk"]
+        ).order_by("id")
 
     def get_serializer_class(self):
         if self.action == "list":
@@ -114,7 +122,8 @@ class EvenementViewset(ModelViewSet):
         if self.action == "list":
             permission_classes = [IsAuthenticated]
         elif self.action == "create":
-            permission_classes = [IsAuthenticated, EstVendeur, EstResponsableClientContrat]
+            permission_classes = [IsAuthenticated, EstVendeur,
+                                  EstResponsableClientContrat]
         elif self.action == "retrieve" or self.action == "update":
             permission_classes = [IsAuthenticated, EstResponsableEvenement]
         else:
@@ -128,7 +137,9 @@ class EvenementViewset(ModelViewSet):
     def perform_update(self, serializer):
         evenement = Evenement.objects.get(id=self.kwargs["pk"])
         if evenement.ouvert is False:
-            raise ValidationError("Votre évènement est fermé, vous ne pouvez plus le modifier.")
+            raise ValidationError(
+                "Votre évènement est fermé, vous ne pouvez plus le modifier."
+            )
         serializer.save()
 
 

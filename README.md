@@ -65,6 +65,10 @@ DATABASES = {
     }
 }
 ```
+Effectuer la migration des données :
+```bash
+python manage.py migrate
+```
 Attention!! Si vous souhaitez lancer les tests avec pytest, votre 
 utilisateur doit avoir les autorisations de se connecter et créer des bases 
 de données.
